@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="maincolor">#84d8d1</color><!-- 主色调 -->
+    <color name="white">#ffffff</color>    <!-- 白色 -->
+    <color name="black">#000000</color>
+    <color name="record_title_bg">#686868</color><!-- 录音文件标题颜色 -->
+    <color name="text_top_bottom_bg">#771891</color><!-- 录音波标题背景颜色 -->
+    <color name="acoustic_wave_bg">#f10e0e</color><!-- 录音波背景颜色 -->
+    <color name="my_record_bg">#edfbfa</color><!-- 我的录音布局背景色 -->
+  
+</resources>

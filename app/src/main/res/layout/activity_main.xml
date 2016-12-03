@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:background="#1D1E1D"
+        android:layout_height="match_parent"
+         android:orientation="vertical"
+         >
+
+
+
+
+    <TextView
+        android:id="@+id/Message"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="28dp"
+        android:text="按住说话"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#fff" />
+
+    <SurfaceView
+    android:id="@+id/myVolumeWaveView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/acoustic_wave_bg" />
+    />
+
+    <Button
+        android:id="@+id/speakButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/speak_bt_select"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        />
+
+</LinearLayout>

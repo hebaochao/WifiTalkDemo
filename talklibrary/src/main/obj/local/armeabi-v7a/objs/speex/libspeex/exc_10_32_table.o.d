@@ -1,2 +1,2 @@
-/Users/alex/Documents/WinHiCode/WifiTalkDemo/talklibrary/src/main/obj/local/armeabi-v7a/objs/speex/./libspeex/exc_10_32_table.o: \
-  /Users/alex/Documents/WinHiCode/WifiTalkDemo/talklibrary/src/main/jni/./libspeex/exc_10_32_table.c
+/Users/alex/Documents/AndroidLibForGit/WifiTalkDemo/talklibrary/src/main/obj/local/armeabi-v7a/objs/speex/./libspeex/exc_10_32_table.o: \
+  /Users/alex/Documents/AndroidLibForGit/WifiTalkDemo/talklibrary/src/main/jni/./libspeex/exc_10_32_table.c

@@ -56,7 +56,6 @@ public class NetSendSoundsThread extends BaseSoundsThread {
 
     public NetSendSoundsThread(int frame_size, Codec codec)
         {
-            super(codec);
             this.frame_size = frame_size;
             recBufSize = AudioRecord.getMinBufferSize(frequency, AudioFormat.CHANNEL_CONFIGURATION_MONO, AudioFormat.ENCODING_PCM_16BIT);
             audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, AudioFormat.CHANNEL_CONFIGURATION_MONO, AudioFormat.ENCODING_PCM_16BIT, recBufSize);

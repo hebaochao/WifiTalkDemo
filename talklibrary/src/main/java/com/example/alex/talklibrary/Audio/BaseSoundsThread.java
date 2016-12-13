@@ -24,9 +24,10 @@ public class BaseSoundsThread extends  Thread {
      * 初始化加码器
      * @param codec
      */
-    public BaseSoundsThread(Codec codec) {
+    public BaseSoundsThread() {
         super();
-        this.codec = codec;
+        this.codec = new Speex();
+        this.codec.init();
     }
 
 

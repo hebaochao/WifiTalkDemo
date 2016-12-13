@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.alex.talklibrary.Audio.NetReceiveSoundsThread;
 import com.example.alex.talklibrary.Audio.NetSendSoundsThread;
+import com.example.alex.talklibrary.Audio.ReceiveSoundsThread;
 import com.example.alex.talklibrary.Utils.Codec;
 import com.example.alex.talklibrary.Utils.Speex;
 
@@ -51,9 +52,9 @@ public class MainActivity_test extends Activity
     private void initSoundThread(){
 		mycodec = new Speex();
 		mycodec.init();
-		//初始化录音发送线程
-		sendSoundsThread = new NetSendSoundsThread(mycodec.frame_size(),mycodec);
-		receiveSoundsThread = new NetReceiveSoundsThread(mycodec);
+//		//初始化录音发送线程
+//		sendSoundsThread = new NetSendSoundsThread(mycodec.frame_size(),mycodec);
+//		receiveSoundsThread = new NetReceiveSoundsThread(mycodec);
 	}
 
 
@@ -75,47 +76,52 @@ public class MainActivity_test extends Activity
 
 //
 
-		speakButton = (Button) findViewById(R.id.speakButton);
-		speakButton.setOnTouchListener(new OnTouchListener()
-		{
-			@Override
-			public boolean onTouch(View v, MotionEvent event)
-			{
-				if (event.getAction() == MotionEvent.ACTION_DOWN)
-				{
-					message.setText("松开结束");
+//		speakButton = (Button) findViewById(R.id.speakButton);
+//		speakButton.setOnTouchListener(new OnTouchListener()
+//		{
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event)
+//			{
+//				if (event.getAction() == MotionEvent.ACTION_DOWN)
+//				{
+//					message.setText("松开结束");
+//
+//					if (isFirst)
+//					{
+//
+//						sendSoundsThread.start();
+//						receiveSoundsThread.start();
+//						isFirst = false;
+//						myVolumeWaveView.baseLine = surfaceView.getHeight()/2;
+////						myVolumeWaveView.drawWidth = 200;
+////						myVolumeWaveView.drawHight = surfaceView.getHeight();
+//						sfvtimer.schedule(new TimerTask() {
+//							@Override
+//							public void run() {
+//								Message message = new Message();
+//								message.what = 1;
+//								mHandler.sendMessage(message);
+//							}
+//						}, 0, 200);
+//					}
+//
+//					sendSoundsThread.setRunning(true);
+//					receiveSoundsThread.setRunning(false);
+//				}
+//				else if (event.getAction() == MotionEvent.ACTION_UP)
+//				{
+//					message.setText("按住说话");
+//					sendSoundsThread.setRunning(false);
+//					receiveSoundsThread.setRunning(true);
+//				}
+//				return false;
+//			}
+//		});
 
-					if (isFirst)
-					{
 
-						sendSoundsThread.start();
-						receiveSoundsThread.start();
-						isFirst = false;
-						myVolumeWaveView.baseLine = surfaceView.getHeight()/2;
-//						myVolumeWaveView.drawWidth = 200;
-//						myVolumeWaveView.drawHight = surfaceView.getHeight();
-						sfvtimer.schedule(new TimerTask() {
-							@Override
-							public void run() {
-								Message message = new Message();
-								message.what = 1;
-								mHandler.sendMessage(message);
-							}
-						}, 0, 200);
-					}
-
-					sendSoundsThread.setRunning(true);
-					receiveSoundsThread.setRunning(false);
-				}
-				else if (event.getAction() == MotionEvent.ACTION_UP)
-				{
-					message.setText("按住说话");
-					sendSoundsThread.setRunning(false);
-					receiveSoundsThread.setRunning(true);
-				}
-				return false;
-			}
-		});
+		ReceiveSoundsThread  receiveSoundsThread  =new ReceiveSoundsThread();
+		receiveSoundsThread.start();
+		receiveSoundsThread.setRunning(true);
 	}
 
 
@@ -126,13 +132,13 @@ public class MainActivity_test extends Activity
 		android.os.Process.killProcess(android.os.Process.myPid());
 	}
 
-	private final Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			Log.i("分贝", "handleMessage: "+sendSoundsThread.getVolume());
-			// TODO Auto-generated method stub
-			myVolumeWaveView.updateMicStatus((int)sendSoundsThread.getVolume());
-
-		}
-	};
+//	private final Handler mHandler = new Handler() {
+//		@Override
+//		public void handleMessage(Message msg) {
+//			Log.i("分贝", "handleMessage: "+sendSoundsThread.getVolume());
+//			// TODO Auto-generated method stub
+//			myVolumeWaveView.updateMicStatus((int)sendSoundsThread.getVolume());
+//
+//		}
+//	};
 }

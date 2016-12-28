@@ -40,12 +40,7 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
     private LinkedList<byte[]> dataList = null;
 
 
-    /***
-     * 初始化
-     */
-    public ReceiveSoundsThread()
-    {
-        super();
+    public ReceiveSoundsThread() {
         // 播放器
         playBufSize = AudioTrack.getMinBufferSize(frequency, audioFormat, AudioFormat.ENCODING_PCM_16BIT);
         audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, frequency, audioFormat, AudioFormat.ENCODING_PCM_16BIT, playBufSize, AudioTrack.MODE_STREAM);
@@ -53,41 +48,42 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
         audioTrack.play();  //播放
     }
 
-
     @Override
-    public synchronized void run()
+    public  void run()
     {
         super.run();
+
         //初始化参数
         dataList =  new LinkedList<>();
         isRunning = true;
 
+        //后台播音处理
         while (true){
+
             if(!isRunning){
                 return;
             }
-            if (!dataList.isEmpty()){
-//                Log.i(TAG, "onHandleIntent:  开始播放 dataList.size:"+dataList.size());
-                playAudio();
-//                Log.i(TAG, "onHandleIntent: 播放完毕 dataList.size:"+dataList.size());
 
-            }else{
+            if( !dataList.isEmpty()){
+                    //播放音频
+                    playAudio();
+            } else{
+                //非运行状态 或者数据包为空
                 try {
                     Thread.sleep(15);
-//                    Log.i(TAG, "onHandleIntent: 等待接收音频 dataList.size:"+dataList.size());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-//            Log.i(TAG, "onHandleIntent: 单次循环操作完毕 dataList.size(): "+dataList.size());
+
         }
+
     }
 
 
 
 
     synchronized public  void playAudio(){
-
 
         byte [] data = dataList.removeFirst();
         //接收到数据
@@ -131,7 +127,7 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
      * 添加ARM语音数据包到播放队列中
      * @param recordBytes
      */
-    public void addRecordBytes(byte[] recordBytes){
+    public synchronized void addRecordBytes(byte[] recordBytes){
         dataList.addLast(recordBytes);
     }
 
@@ -150,16 +146,19 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
     }
 
 
-    /****
-     *释放音频数据流中的数据
+
+
+    /***
+     * 停止播放音频线程
      */
-    public void ReleaseReceiveSoundsData(){
+    public void stopMyReceiveSoundsThread(){
         isRunning = false;
         dataList.clear();
         audioTrack.stop();
         audioTrack.release();
-        audioTrack.play();
     }
+
+
 
 
 

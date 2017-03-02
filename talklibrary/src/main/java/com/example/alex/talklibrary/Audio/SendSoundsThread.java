@@ -65,8 +65,12 @@ public class SendSoundsThread extends BaseSoundsThread {
         super();
         int frame_size = codec.frame_size();
         this.frame_size = frame_size;
-        recBufSize = AudioRecord.getMinBufferSize(frequency, audioFormat, AudioFormat.ENCODING_PCM_16BIT);
-        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, audioFormat, AudioFormat.ENCODING_PCM_16BIT, recBufSize);
+//        recBufSize = AudioRecord.getMinBufferSize(frequency, audioFormat, AudioFormat.ENCODING_PCM_16BIT);
+//        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, audioFormat, AudioFormat.ENCODING_PCM_16BIT, recBufSize);
+
+        recBufSize = AudioRecord.getMinBufferSize(frequency, AudioFormat.CHANNEL_IN_STEREO, AudioFormat.ENCODING_PCM_16BIT);
+        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, AudioFormat.CHANNEL_IN_STEREO, AudioFormat.ENCODING_PCM_16BIT, recBufSize);
+
         aec(audioRecord);
 
 

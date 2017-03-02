@@ -3,6 +3,7 @@ package com.example.alex.talklibrary.Audio;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.os.Build;
 import android.util.Log;
 
 import com.example.alex.talklibrary.Config.AppConfig;
@@ -42,9 +43,24 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
 
     public ReceiveSoundsThread() {
         // 播放器
-        playBufSize = AudioTrack.getMinBufferSize(frequency, audioFormat, AudioFormat.ENCODING_PCM_16BIT);
-        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, frequency, audioFormat, AudioFormat.ENCODING_PCM_16BIT, playBufSize, AudioTrack.MODE_STREAM);
-        audioTrack.setStereoVolume(0.8f, 0.8f);// 设置当前音量大小
+//        playBufSize = AudioTrack.getMinBufferSize(frequency, audioFormat, AudioFormat.ENCODING_PCM_16BIT);
+  //      audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, frequency, audioFormat, AudioFormat.ENCODING_PCM_16BIT, playBufSize, AudioTrack.MODE_STREAM);
+//        audioTrack.setStereoVolume(0.8f, 0.8f);// 设置当前音量大小
+
+//        playBufSize = AudioTrack.getMinBufferSize(frequency, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
+        playBufSize = AudioTrack.getMinBufferSize(frequency, AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT);
+        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, frequency, AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT, playBufSize, AudioTrack.MODE_STREAM);
+
+
+
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            audioTrack.setVolume(1.0f);
+        }else {
+            audioTrack.setStereoVolume(1.0f,1.0f);
+        }
+
         audioTrack.play();  //播放
     }
 
@@ -101,7 +117,7 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
 //            Log.i(TAG, "run: 消除噪音");
             // 播放解码后的数据  把数据写到数据流中
             len = audioTrack.write(out, 0, len);
-//            Log.i(TAG, "run: 音频数据写到播放器中");
+           Log.i(TAG, "run: 音频数据写到播放器中");
 //            data = null; //恢复临时数据
 
         } catch (Exception e) {

@@ -98,7 +98,7 @@ public class SendSoundsThread extends BaseSoundsThread {
 
 
     @Override
-    public synchronized void run()
+    public  void run()
     {
         super.run();
         audioRecord.startRecording();
@@ -119,7 +119,7 @@ public class SendSoundsThread extends BaseSoundsThread {
                     short[] pcmFrame = new short[frame_size];
                     //获取录音到的音频流数据（PCM）
                     num = audioRecord.read(pcmFrame, 0, frame_size);
-                    //使用FFmpeg编码  PCM->ARM
+                    //使用FFmpeg编码  PCM->AAC
                     num = codec.encode(pcmFrame, 0, buffer, num);
                     //获取分贝值
                     volume = SendSoundsThread.this.countDb(pcmFrame);

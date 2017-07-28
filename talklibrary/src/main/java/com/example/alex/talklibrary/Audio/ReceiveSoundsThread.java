@@ -6,18 +6,7 @@ import android.media.AudioTrack;
 import android.os.Build;
 import android.util.Log;
 
-import com.example.alex.talklibrary.Config.AppConfig;
-import com.example.alex.talklibrary.Utils.Codec;
-
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketException;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Created by alex on 16/10/5.
@@ -99,7 +88,7 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
 
 
 
-    synchronized public  void playAudio(){
+     public  synchronized void playAudio(){
 
         byte [] data = dataList.removeFirst();
         //接收到数据
@@ -107,7 +96,7 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
 
         int  len = 0;
         try {
-            //解码  ARM - >pcm
+            //解码  ARM - >AAC
             len = codec.decode(data, out, data.length);
             Log.i(TAG, "run: len"+len);
             data = null;

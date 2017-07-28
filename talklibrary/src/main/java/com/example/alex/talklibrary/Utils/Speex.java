@@ -58,9 +58,17 @@ public class Speex extends CodecBase implements Codec {
 	public native int encode(short lin[], int offset, byte encoded[], int size);
 	public native void close();
 
+
+
+
 	public void init() {
 		load();
 		if (isLoaded())
 			open(DEFAULT_COMPRESSION);
 	}
+
+
+
+
+
 }

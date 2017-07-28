@@ -2,25 +2,20 @@ package com.example.alex.wifitalkdemo;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.SurfaceView;
-import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.alex.talklibrary.Audio.NetReceiveSoundsThread;
 import com.example.alex.talklibrary.Audio.NetSendSoundsThread;
-import com.example.alex.talklibrary.Audio.ReceiveSoundsThread;
 import com.example.alex.talklibrary.Utils.Codec;
 import com.example.alex.talklibrary.Utils.Speex;
-
+import com.example.alex.talklibrary.Utils.SpeexCoder;
 
 import java.util.Timer;
-import java.util.TimerTask;
+
+import static android.content.ContentValues.TAG;
 
 
 public class MainActivity_test extends Activity
@@ -64,14 +59,17 @@ public class MainActivity_test extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-        this.initSoundThread();
-
+//        this.initSoundThread();
+		SpeexCoder speex = new SpeexCoder();
+		speex.InitSpeexDecode(8000);
+		Log.e(TAG, "onCreate: init end" );
+		speex.ReleaseSpeexDecode();
 		message = (TextView) findViewById(R.id.Message);
 
-	    surfaceView = (SurfaceView) this.findViewById(R.id.myVolumeWaveView);
-//
-		sfvtimer = new Timer();
-		myVolumeWaveView = new VolumeWaveView(surfaceView,this);
+//	    surfaceView = (SurfaceView) this.findViewById(R.id.myVolumeWaveView);
+////
+//		sfvtimer = new Timer();
+//		myVolumeWaveView = new VolumeWaveView(surfaceView,this);
 
 
 //
@@ -119,9 +117,9 @@ public class MainActivity_test extends Activity
 //		});
 
 
-		ReceiveSoundsThread  receiveSoundsThread  =new ReceiveSoundsThread();
-		receiveSoundsThread.start();
-		receiveSoundsThread.setRunning(true);
+//		ReceiveSoundsThread  receiveSoundsThread  =new ReceiveSoundsThread();
+//		receiveSoundsThread.start();
+//		receiveSoundsThread.setRunning(true);
 	}
 
 

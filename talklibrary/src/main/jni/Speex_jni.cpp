@@ -2,7 +2,7 @@
 
 #include <string.h>
 #include <unistd.h>
-
+#include "speex_code.h"
 #include <speex/speex.h>
 
 #define LOG_TAG "Native"
@@ -112,5 +112,78 @@ JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_Speex_close
 	speex_decoder_destroy(dec_state);
 	speex_encoder_destroy(enc_state);
 }
+
+
+extern "C"
+JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_InitSpeexEncode
+		(JNIEnv *, jobject, jint frameHZ) {
+
+	// TODO
+	InitSpeexEncode(frameHZ);
+
+}
+
+
+
+extern "C"
+JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_ReleaseSpeexEncode
+		(JNIEnv *env, jobject obj){
+
+	// TODO
+	ReleaseSpeexEncode();
+}
+
+extern "C"
+JNIEXPORT jint JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_SpeexEncodeAudioData
+		(JNIEnv *env, jobject onj, jshortArray pInBuf_, jint len, jbyteArray outFrame_, jint outFrameSize){
+	jshort *pInBuf = env->GetShortArrayElements(pInBuf_, NULL);
+	jbyte *outFrame = env->GetByteArrayElements(outFrame_, NULL);
+
+	int  result = SpeexEncode(pInBuf,len,(char *)outFrame,outFrameSize);
+
+	env->ReleaseShortArrayElements(pInBuf_, pInBuf, 0);
+	env->ReleaseByteArrayElements(outFrame_, outFrame, 0);
+	return   result;
+}
+
+extern "C"
+JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_InitSpeexDecode
+		(JNIEnv * env, jobject obj, jint frameHZ) {
+
+	// TODO
+	InitSpeexDecode(frameHZ);
+
+}
+
+extern "C"
+JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_ReleaseSpeexDecode
+		(JNIEnv * onj, jobject obj){
+
+	// TODO
+	ReleaseSpeexDecode();
+}
+
+
+
+extern "C"
+JNIEXPORT jint JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_SpeexDecodeAudioData
+		(JNIEnv * env, jobject obj, jbyteArray pInBuf_, jint len, jshortArray outFrame_, jint outFrameSize){
+	jbyte *pInBuf = env->GetByteArrayElements(pInBuf_, NULL);
+	jshort *outFrame = env->GetShortArrayElements(outFrame_, NULL);
+
+	// TODO
+	int result = SpeexDecode((char *)pInBuf,len,outFrame,outFrameSize);
+
+	env->ReleaseByteArrayElements(pInBuf_, pInBuf, 0);
+	env->ReleaseShortArrayElements(outFrame_, outFrame, 0);
+	return   result;
+}
+
+
+
+
+
+
+
 
 

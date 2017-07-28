@@ -5,7 +5,7 @@ LOCAL_CFLAGS = -DFIXED_POINT -DUSE_KISS_FFT -DEXPORT="" -UHAVE_CONFIG_H
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
  
 LOCAL_SRC_FILES :=  \
-./speex_jni.cpp \
+./Speex_jni.cpp \
 ./libspeex/bits.c \
 ./libspeex/buffer.c \
 ./libspeex/cb_search.c \
@@ -46,5 +46,6 @@ LOCAL_SRC_FILES :=  \
 ./libspeex/stereo.c \
 ./libspeex/vbr.c \
 ./libspeex/vq.c \
-./libspeex/window.c
+./libspeex/window.c \
+./speex_code.cpp
 include $(BUILD_SHARED_LIBRARY)

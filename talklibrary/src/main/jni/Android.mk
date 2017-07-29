@@ -48,4 +48,5 @@ LOCAL_SRC_FILES :=  \
 ./libspeex/vq.c \
 ./libspeex/window.c \
 ./speex_code.cpp
+
 include $(BUILD_SHARED_LIBRARY)

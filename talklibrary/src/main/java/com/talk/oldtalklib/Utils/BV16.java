@@ -17,58 +17,41 @@
  * along with this source code; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package com.example.alex.talklibrary.Utils;
+package com.talk.oldtalklib.Utils;
 
 
-public class Speex extends CodecBase implements Codec {
+public class BV16 extends CodecBase implements Codec {
 
-	/* quality
-	 * 1 : 4kbps (very noticeable artifacts, usually intelligible)
-	 * 2 : 6kbps (very noticeable artifacts, good intelligibility)
-	 * 4 : 8kbps (noticeable artifacts sometimes)
-	 * 6 : 11kpbs (artifacts usually only noticeable with headphones)
-	 * 8 : 15kbps (artifacts not usually noticeable)
-	 */
-	private static final int DEFAULT_COMPRESSION = 6;
+// 	private static final int DEFAULT_COMPRESSION = 6;
 
-	public Speex() {
-		CODEC_NAME = "speex";
-		CODEC_USER_NAME = "speex";
-		CODEC_DESCRIPTION = "11kbit";
-		CODEC_NUMBER = 97;
+	public BV16() {
+		CODEC_NAME = "BV16";
+		CODEC_USER_NAME = "BV16";
+		CODEC_DESCRIPTION = "16kbit";
+		CODEC_NUMBER = 106;
 		CODEC_DEFAULT_SETTING = "always";
 		super.update();
 	}
 
-	@Override
+
 	void load() {
-		super.load();
 		try {
-			System.loadLibrary("speex");
+			System.loadLibrary("bv16_jni");
 			super.load();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-	}
-
-
-
-	public native int open(int compression);
+    
+	}  
+ 
+	public native int open();
 	public native int decode(byte encoded[], short lin[], int size);
 	public native int encode(short lin[], int offset, byte encoded[], int size);
 	public native void close();
 
-
-
-
 	public void init() {
 		load();
 		if (isLoaded())
-			open(DEFAULT_COMPRESSION);
+			open();
 	}
-
-
-
-
-
 }

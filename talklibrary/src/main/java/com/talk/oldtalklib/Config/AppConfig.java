@@ -1,4 +1,4 @@
-package com.example.alex.talklibrary.Config;
+package com.talk.oldtalklib.Config;
 //www.javaapk.com
 public class AppConfig
 {

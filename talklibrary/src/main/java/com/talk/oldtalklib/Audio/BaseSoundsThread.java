@@ -1,8 +1,8 @@
-package com.example.alex.talklibrary.Audio;
+package com.talk.oldtalklib.Audio;
 
 import android.media.AudioFormat;
 
-import com.example.alex.talklibrary.Utils.*;
+import com.talk.oldtalklib.Utils.*;
 
 /**
  * Created by alex on 16/10/5.

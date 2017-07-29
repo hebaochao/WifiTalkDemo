@@ -76,9 +76,7 @@ int SpeexEncode(short *pInFrame, int inFrameSize, char *pOutFrame, int outFrameS
 	return speex_bits_write(&encBits, pOutFrame, nbBytes);
 }
 
-static void * decState = NULL;
-static SpeexBits decBits;
-static spx_int32_t decOutFrameSize = 0;
+
 
 /*******************************************
 ��ʼ������
@@ -138,9 +136,9 @@ void ReleaseSpeexDecode()
 int SpeexDecode(char *pInFrame, int inFrameSize, short *pOutFrame, int outFrameSize)
 {
 	speex_bits_read_from(&decBits, pInFrame, inFrameSize);
-	int nbBytes = speex_bits_nbytes(&decBits);
-	if (outFrameSize < nbBytes )
-		return SPEEX_OUTFRAME_SIZE_ERR;
+//	int nbBytes = speex_bits_nbytes(&decBits);
+//	if (outFrameSize < nbBytes )
+//		return SPEEX_OUTFRAME_SIZE_ERR;
 	speex_decode_int(decState, &decBits, pOutFrame);
 	return SPEEX_SUCCEED;
 }

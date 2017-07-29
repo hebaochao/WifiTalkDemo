@@ -1,10 +1,8 @@
-package com.example.alex.talklibrary.Audio;
+package com.talk.oldtalklib.Audio;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 
 
 import android.media.AudioFormat;
@@ -16,9 +14,9 @@ import android.media.audiofx.AcousticEchoCanceler;
 import android.media.audiofx.NoiseSuppressor;
 import android.util.Log;
 
-import com.example.alex.talklibrary.Config.AppConfig;
-import com.example.alex.talklibrary.Utils.Codec;
-import com.example.alex.talklibrary.Utils.Speex;
+import com.talk.oldtalklib.Config.AppConfig;
+import com.talk.oldtalklib.Utils.Codec;
+import com.talk.oldtalklib.Utils.Speex;
 
 
 /**

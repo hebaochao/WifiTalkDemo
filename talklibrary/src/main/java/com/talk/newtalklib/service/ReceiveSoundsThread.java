@@ -1,4 +1,4 @@
-package com.example.alex.talklibrary.service;
+package com.talk.newtalklib.service;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -6,7 +6,7 @@ import android.media.AudioTrack;
 import android.os.Build;
 import android.util.Log;
 
-import com.example.alex.talklibrary.Utils.SpeexCoder;
+import com.talk.newtalklib.code.SpeexCoder;
 
 import java.util.LinkedList;
 
@@ -36,8 +36,8 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
         codec = new SpeexCoder();
         codec.InitSpeexDecode(frequency);
         // 播放器
-        playBufSize = AudioTrack.getMinBufferSize(frequency, AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT);
-        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, frequency, AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT, playBufSize, AudioTrack.MODE_STREAM);
+        playBufSize = AudioTrack.getMinBufferSize(frequency, AudioFormat.CHANNEL_OUT_STEREO,audioFormat );
+        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, frequency, channelConfig,audioFormat, playBufSize, AudioTrack.MODE_STREAM);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -53,11 +53,9 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
     public  void run()
     {
         super.run();
-
         //初始化参数
         dataList =  new LinkedList<>();
         isRunning = true;
-
         //后台播音处理
         while (true){
 
@@ -93,11 +91,14 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
                  Log.e(TAG, "playAudio: 音频数据解码"+data.length);
 
                  short[] decoderData = new short[pcmLen];
-                  int  decoderDataLen = codec.SpeexDecodeAudioData(data,data.length,decoderData,decoderData.length);
-                 Log.e(TAG, "playAudio: 音频数据解码完毕"+data.length);
-                 // 播放解码后的数据  把数据写到数据流中
-                 audioTrack.write(decoderData, 0, decoderDataLen);
-                 Log.i(TAG, "run: 音频数据写到播放器中");
+                  int  decoderDataLen = codec.SpeexDecodeAudioData(data,data.length,decoderData);
+                 Log.e(TAG, "playAudio: 音频数据解码完毕"+data);
+                 if (decoderDataLen == 0 ){ //解码成功
+                     // 播放解码后的数据  把数据写到数据流中
+                     audioTrack.write(decoderData, 0, decoderData.length);
+                     Log.i(TAG, "run: 音频数据写到播放器中");
+                 }
+
 
              } catch (Exception e) {
                  // TODO Auto-generated catch block

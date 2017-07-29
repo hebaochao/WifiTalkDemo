@@ -1,4 +1,4 @@
-package com.example.alex.talklibrary.service;
+package com.talk.newtalklib.service;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;

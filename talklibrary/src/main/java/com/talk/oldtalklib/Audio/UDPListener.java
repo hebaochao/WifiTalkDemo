@@ -1,4 +1,4 @@
-package com.example.alex.talklibrary.Audio;
+package com.talk.oldtalklib.Audio;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 
 import android.util.Log;
 
-import com.example.alex.talklibrary.Config.AppConfig;
+import com.talk.oldtalklib.Config.AppConfig;
 
 
 /**

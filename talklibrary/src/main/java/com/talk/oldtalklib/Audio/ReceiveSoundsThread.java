@@ -1,4 +1,4 @@
-package com.example.alex.talklibrary.Audio;
+package com.talk.oldtalklib.Audio;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;

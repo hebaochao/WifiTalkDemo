@@ -1,4 +1,4 @@
-package com.example.alex.talklibrary.Utils;
+package com.talk.newtalklib.code;
 
 /**
  * Created by baochaoh on 2017/7/29.
@@ -45,7 +45,7 @@ public class SpeexCoder {
      * @param len
      * @return
      */
-    public native  int  SpeexDecodeAudioData(byte[] pInBuf, int len,short []outFrame,int outFrameSize);
+    public native  int  SpeexDecodeAudioData(byte[] pInBuf, int len,short []outFrame);
 
 
 }

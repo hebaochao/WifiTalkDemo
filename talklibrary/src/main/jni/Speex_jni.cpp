@@ -21,7 +21,7 @@ void *dec_state;
 static JavaVM *gJavaVM;
 
 extern "C"
-JNIEXPORT jint JNICALL Java_com_example_alex_talklibrary_Utils_Speex_open
+JNIEXPORT jint JNICALL Java_com_talk_oldtalklib_Utils_Speex_open
   (JNIEnv *env, jobject obj, jint compression) {
 	int tmp;
 
@@ -42,7 +42,7 @@ JNIEXPORT jint JNICALL Java_com_example_alex_talklibrary_Utils_Speex_open
 }
 
 extern "C"
-JNIEXPORT jint Java_com_example_alex_talklibrary_Utils_Speex_encode
+JNIEXPORT jint JNICALL Java_com_talk_oldtalklib_Utils_Speex_encode
     (JNIEnv *env, jobject obj, jshortArray lin, jint offset, jbyteArray encoded, jint size) {
 
         jshort buffer[enc_frame_size];
@@ -71,7 +71,7 @@ JNIEXPORT jint Java_com_example_alex_talklibrary_Utils_Speex_encode
 }
 
 extern "C"
-JNIEXPORT jint JNICALL Java_com_example_alex_talklibrary_Utils_Speex_decode
+JNIEXPORT jint JNICALL Java_com_talk_oldtalklib_Utils_Speex_decode
     (JNIEnv *env, jobject obj, jbyteArray encoded, jshortArray lin, jint size) {
 
         jbyte buffer[dec_frame_size];
@@ -91,7 +91,7 @@ JNIEXPORT jint JNICALL Java_com_example_alex_talklibrary_Utils_Speex_decode
 }
 
 extern "C"
-JNIEXPORT jint JNICALL Java_com_example_alex_talklibrary_Utils_Speex_getFrameSize
+JNIEXPORT jint JNICALL Java_com_talk_oldtalklib_Utils_Speex_getFrameSize
     (JNIEnv *env, jobject obj) {
 
 	if (!codec_open)
@@ -101,7 +101,7 @@ JNIEXPORT jint JNICALL Java_com_example_alex_talklibrary_Utils_Speex_getFrameSiz
 }
 
 extern "C"
-JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_Speex_close
+JNIEXPORT void JNICALL Java_com_talk_oldtalklib_Utils_Speex_close
     (JNIEnv *env, jobject obj) {
 
 	if (--codec_open != 0)
@@ -115,7 +115,7 @@ JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_Speex_close
 
 
 extern "C"
-JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_InitSpeexEncode
+JNIEXPORT void JNICALL Java_com_talk_newtalklib_code_SpeexCoder_InitSpeexEncode
 		(JNIEnv *, jobject, jint frameHZ) {
 
 	// TODO
@@ -126,7 +126,7 @@ JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_InitSp
 
 
 extern "C"
-JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_ReleaseSpeexEncode
+JNIEXPORT void JNICALL Java_com_talk_newtalklib_code_SpeexCoder_ReleaseSpeexEncode
 		(JNIEnv *env, jobject obj){
 
 	// TODO
@@ -134,7 +134,7 @@ JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_Releas
 }
 
 extern "C"
-JNIEXPORT jint JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_SpeexEncodeAudioData
+JNIEXPORT jint JNICALL Java_com_talk_newtalklib_code_SpeexCoder_SpeexEncodeAudioData
 		(JNIEnv *env, jobject onj, jshortArray pInBuf_, jint len, jbyteArray outFrame_, jint outFrameSize){
 	jshort *pInBuf = env->GetShortArrayElements(pInBuf_, NULL);
 	jbyte *outFrame = env->GetByteArrayElements(outFrame_, NULL);
@@ -147,7 +147,7 @@ JNIEXPORT jint JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_SpeexE
 }
 
 extern "C"
-JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_InitSpeexDecode
+JNIEXPORT void JNICALL Java_com_talk_newtalklib_code_SpeexCoder_InitSpeexDecode
 		(JNIEnv * env, jobject obj, jint frameHZ) {
 
 	// TODO
@@ -156,7 +156,7 @@ JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_InitSp
 }
 
 extern "C"
-JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_ReleaseSpeexDecode
+JNIEXPORT void JNICALL Java_com_talk_newtalklib_code_SpeexCoder_ReleaseSpeexDecode
 		(JNIEnv * onj, jobject obj){
 
 	// TODO
@@ -166,13 +166,15 @@ JNIEXPORT void JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_Releas
 
 
 extern "C"
-JNIEXPORT jint JNICALL Java_com_example_alex_talklibrary_Utils_SpeexCoder_SpeexDecodeAudioData
-		(JNIEnv * env, jobject obj, jbyteArray pInBuf_, jint len, jshortArray outFrame_, jint outFrameSize){
+JNIEXPORT jint JNICALL Java_com_talk_newtalklib_code_SpeexCoder_SpeexDecodeAudioData
+		(JNIEnv * env, jobject obj, jbyteArray pInBuf_, jint len, jshortArray outFrame_){
 	jbyte *pInBuf = env->GetByteArrayElements(pInBuf_, NULL);
 	jshort *outFrame = env->GetShortArrayElements(outFrame_, NULL);
 
+
+
 	// TODO
-	int result = SpeexDecode((char *)pInBuf,len,outFrame,outFrameSize);
+	int result = SpeexDecode((char *)pInBuf,len,outFrame,decOutFrameSize);
 
 	env->ReleaseByteArrayElements(pInBuf_, pInBuf, 0);
 	env->ReleaseShortArrayElements(outFrame_, outFrame, 0);

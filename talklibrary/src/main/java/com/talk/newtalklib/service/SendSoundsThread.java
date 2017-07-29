@@ -1,4 +1,4 @@
-package com.example.alex.talklibrary.service;
+package com.talk.newtalklib.service;
 
 
 import android.media.AudioFormat;
@@ -7,7 +7,8 @@ import android.media.MediaRecorder;
 import android.media.audiofx.AcousticEchoCanceler;
 import android.media.audiofx.NoiseSuppressor;
 
-import com.example.alex.talklibrary.Utils.SpeexCoder;
+import com.talk.TalkAudioCallBack;
+import com.talk.newtalklib.code.SpeexCoder;
 
 import java.nio.ByteBuffer;
 
@@ -64,8 +65,8 @@ public class SendSoundsThread extends  BaseSoundsThread{
         //启动编码器
         codec.InitSpeexEncode(frequency);
 
-        frame_size   = AudioRecord.getMinBufferSize(frequency, AudioFormat.CHANNEL_IN_STEREO, AudioFormat.ENCODING_PCM_16BIT);
-        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, AudioFormat.CHANNEL_IN_STEREO, AudioFormat.ENCODING_PCM_16BIT, frame_size);
+        frame_size   = AudioRecord.getMinBufferSize(frequency, AudioFormat.CHANNEL_IN_STEREO, audioFormat);
+        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, channelConfig, audioFormat, frame_size);
 
         aec(audioRecord);
 

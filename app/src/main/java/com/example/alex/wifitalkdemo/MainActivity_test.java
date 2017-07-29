@@ -7,11 +7,11 @@ import android.view.SurfaceView;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.alex.talklibrary.Audio.NetReceiveSoundsThread;
-import com.example.alex.talklibrary.Audio.NetSendSoundsThread;
-import com.example.alex.talklibrary.Utils.Codec;
-import com.example.alex.talklibrary.Utils.Speex;
-import com.example.alex.talklibrary.Utils.SpeexCoder;
+import com.talk.oldtalklib.Audio.NetReceiveSoundsThread;
+import com.talk.oldtalklib.Audio.NetSendSoundsThread;
+import com.talk.oldtalklib.Utils.Codec;
+import com.talk.oldtalklib.Utils.Speex;
+import com.talk.newtalklib.code.SpeexCoder;
 
 import java.util.Timer;
 

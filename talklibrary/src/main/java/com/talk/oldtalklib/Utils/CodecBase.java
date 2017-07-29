@@ -17,7 +17,7 @@
  * along with this source code; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package com.example.alex.talklibrary.Utils;
+package com.talk.oldtalklib.Utils;
 
 import android.preference.ListPreference;
 import android.preference.Preference;

@@ -57,4 +57,10 @@
 *************************************************/
  int SpeexDecode(char *pInFrame, int inFrameSize, short *pOutFrame, int outFrameSize);
 
+
+
+static void * decState = NULL;
+static SpeexBits decBits;
+static spx_int32_t decOutFrameSize = 0;
+
 #endif

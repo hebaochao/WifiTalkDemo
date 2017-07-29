@@ -1,8 +1,8 @@
-package com.example.alex.talklibrary.service;
+package com.talk.newtalklib.service;
 
 import android.media.AudioFormat;
 
-import com.example.alex.talklibrary.Utils.SpeexCoder;
+import com.talk.newtalklib.code.SpeexCoder;
 
 
 /**
@@ -17,7 +17,11 @@ public class BaseSoundsThread extends  Thread {
     /***
      * 声道
      */
-    public int audioFormat = AudioFormat.CHANNEL_CONFIGURATION_MONO;
+    public int channelConfig = AudioFormat.CHANNEL_OUT_STEREO;
+    /***
+     * 音频格式
+     */
+    public int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
 
 
     public final   int pcmLen = frequency * 20/1000;

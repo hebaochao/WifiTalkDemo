@@ -1,4 +1,4 @@
-package com.example.alex.talklibrary.Audio;
+package com.talk.oldtalklib.Audio;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;
@@ -6,9 +6,9 @@ import android.media.MediaRecorder;
 import android.media.audiofx.AcousticEchoCanceler;
 import android.media.audiofx.NoiseSuppressor;
 
-import com.example.alex.talklibrary.Config.AppConfig;
-import com.example.alex.talklibrary.Utils.Codec;
-import com.example.alex.talklibrary.Utils.dataPacket;
+import com.talk.oldtalklib.Config.AppConfig;
+import com.talk.oldtalklib.Utils.Codec;
+import com.talk.oldtalklib.Utils.dataPacket;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

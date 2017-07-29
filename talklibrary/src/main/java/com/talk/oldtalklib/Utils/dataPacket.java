@@ -1,4 +1,4 @@
-package com.example.alex.talklibrary.Utils;
+package com.talk.oldtalklib.Utils;
 //www.javaapk.com
 public class dataPacket
 {

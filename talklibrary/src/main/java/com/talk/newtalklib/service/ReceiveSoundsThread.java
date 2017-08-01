@@ -36,8 +36,9 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
         codec = new SpeexCoder();
         codec.InitSpeexDecode(frequency);
         // 播放器
-        playBufSize = AudioTrack.getMinBufferSize(frequency, AudioFormat.CHANNEL_OUT_STEREO,audioFormat );
-        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, frequency, channelConfig,audioFormat, playBufSize, AudioTrack.MODE_STREAM);
+        playBufSize = AudioTrack.getMinBufferSize(frequency, AudioFormat.CHANNEL_OUT_MONO,audioFormat );
+        Log.e(TAG, "ReceiveSoundsThread: playBufSize"+playBufSize);
+        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, frequency, AudioFormat.CHANNEL_OUT_MONO,audioFormat, playBufSize, AudioTrack.MODE_STREAM);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

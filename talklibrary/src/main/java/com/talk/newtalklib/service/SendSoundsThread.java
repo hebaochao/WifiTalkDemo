@@ -65,8 +65,8 @@ public class SendSoundsThread extends  BaseSoundsThread{
         //启动编码器
         codec.InitSpeexEncode(frequency);
 
-        frame_size   = AudioRecord.getMinBufferSize(frequency, AudioFormat.CHANNEL_IN_STEREO, audioFormat);
-        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, channelConfig, audioFormat, frame_size);
+        frame_size   = AudioRecord.getMinBufferSize(frequency, AudioFormat.CHANNEL_IN_MONO, audioFormat);
+        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, AudioFormat.CHANNEL_IN_MONO, audioFormat, frame_size);
 
         aec(audioRecord);
 

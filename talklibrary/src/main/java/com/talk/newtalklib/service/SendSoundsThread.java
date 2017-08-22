@@ -17,13 +17,15 @@ import java.nio.ByteBuffer;
  * Created by alex on 16/10/5.
  * 发送语音线程  ，录音的数据包通过接口回调
  */
-public class SendSoundsThread extends  BaseSoundsThread{
+public class SendSoundsThread extends BaseSoundsThread {
 
     //录音器
     private AudioRecord audioRecord;
     private boolean isRunning = false;
 
-    /** Number of bytes per frame */
+    /**
+     * Number of bytes per frame
+     */
     private int frame_size;
 
 
@@ -32,7 +34,7 @@ public class SendSoundsThread extends  BaseSoundsThread{
     /****
      * 分贝值
      */
-    private      double volume =  0 ;
+    private double volume = 0;
     /***
      * 接口回调
      * 用于回调当前录音组成的数据包
@@ -45,12 +47,11 @@ public class SendSoundsThread extends  BaseSoundsThread{
     public boolean isStart;
 
 
-
     public double getVolume() {
-        if(!isRunning){  //录音完毕
+        if (!isRunning) {  //录音完毕
             volume = 0;
         }
-        return  volume;
+        return volume;
     }
 
 
@@ -58,14 +59,13 @@ public class SendSoundsThread extends  BaseSoundsThread{
         return audioRecord;
     }
 
-    public SendSoundsThread(int bufferSize)
-    {
+    public SendSoundsThread(int bufferSize) {
         super();
         codec = new SpeexCoder();
         //启动编码器
         codec.InitSpeexEncode(frequency);
 
-        frame_size   = AudioRecord.getMinBufferSize(frequency, AudioFormat.CHANNEL_IN_MONO, audioFormat);
+        frame_size = AudioRecord.getMinBufferSize(frequency, AudioFormat.CHANNEL_IN_MONO, audioFormat);
         audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, AudioFormat.CHANNEL_IN_MONO, audioFormat, frame_size);
 
         aec(audioRecord);
@@ -73,52 +73,47 @@ public class SendSoundsThread extends  BaseSoundsThread{
     }
 
 
-
     @Override
-    public  void run()
-    {
+    public void run() {
         super.run();
         audioRecord.startRecording();
         isStart = true;
-        while (true)
-        {
+        while (true) {
 
-            if(!isStart){
+            if (!isStart) {
                 return;
             }
 
-            if (isRunning)
-            {
-                try
-                {
+            if (isRunning) {
+                try {
                     //音频数据
                     short[] pcmFrame = new short[pcmLen];
                     //获取录音到的音频流数据（PCM）
-                    int  recordedSize = audioRecord.read(pcmFrame, 0, pcmLen);
+                    int recordedSize = audioRecord.read(pcmFrame, 0, pcmLen);
 //                    Log.e(TAG, "handlerAudioDataCallBack: frame_size = %d "+frame_size);
 //                    Log.e(TAG, "handlerAudioDataCallBack: recordedSize = %d "+recordedSize);
                     //音频编码  pcm ->silk 格式
                     int encodeSize = frame_size;
                     byte[] encodeAudioData = new byte[encodeSize];
-                    encodeSize = codec.SpeexEncodeAudioData(pcmFrame, recordedSize,encodeAudioData,encodeSize);
-                    //回调录音数据包
-//                    Log.e(TAG, "handlerAudioDataCallBack: data = %d "+encodeSize);
-                    byte[] data = new byte[encodeSize];
-                    ByteBuffer.wrap(encodeAudioData).get(data,0,encodeSize);
-                    if(myCallBack != null){
-                        myCallBack.RecordAudioData(data);
+                    encodeSize = codec.SpeexEncodeAudioData(pcmFrame, recordedSize, encodeAudioData, encodeSize);
+                    if (encodeSize > 0) {
+                        //回调录音数据包
+//                      Log.e(TAG, "handlerAudioDataCallBack: data = %d "+encodeSize);
+                        byte[] data = new byte[encodeSize];
+                        ByteBuffer.wrap(encodeAudioData).get(data, 0, encodeSize);
+                        if (myCallBack != null) {
+                            myCallBack.RecordAudioData(data);
+                        }
+                        //获取分贝值
+                        volume = SendSoundsThread.this.countDb(pcmFrame);
                     }
 
-                    //获取分贝值
-                    volume = SendSoundsThread.this.countDb(pcmFrame);
 
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-            }else {
+            } else {
                 try {
                     sleep(1);
                 } catch (InterruptedException e) {
@@ -142,12 +137,12 @@ public class SendSoundsThread extends  BaseSoundsThread{
     /***
      * 停止线程 释放资源
      */
-    public void  releaseSendSoundsThread(){
+    public void releaseSendSoundsThread() {
         isStart = false;
         codec.ReleaseSpeexEncode();
 
         myCallBack = null;
-        if(audioRecord != null){
+        if (audioRecord != null) {
             audioRecord.stop();
             audioRecord.release();
             audioRecord = null;
@@ -159,8 +154,7 @@ public class SendSoundsThread extends  BaseSoundsThread{
      * 设置录音线程是否运行
      * @param isRunning
      */
-    public void setRunning(boolean isRunning)
-    {
+    public void setRunning(boolean isRunning) {
 
         this.isRunning = isRunning;
 
@@ -195,28 +189,22 @@ public class SendSoundsThread extends  BaseSoundsThread{
      * @param data
      * @return
      */
-    public double countDb (short[] data)
-    {
-        float BASE=32768f;
+    public double countDb(short[] data) {
+        float BASE = 32768f;
         float maxAmplitude = 0;
 
-        for (int i = 0; i < data.length; i++)
-        {
+        for (int i = 0; i < data.length; i++) {
             maxAmplitude += data[i] * data[i];
         }
-        maxAmplitude=(float)Math.sqrt(maxAmplitude/data.length);
-        float ratio=maxAmplitude / BASE;
-        float db =0;
-        if(ratio>0)
-        {
-            db = (float) (20 * Math.log10(ratio))+100;
+        maxAmplitude = (float) Math.sqrt(maxAmplitude / data.length);
+        float ratio = maxAmplitude / BASE;
+        float db = 0;
+        if (ratio > 0) {
+            db = (float) (20 * Math.log10(ratio)) + 100;
         }
 
         return db;
     }
-
-
-
 
 
 }

@@ -5,6 +5,6 @@ package com.talk;
  */
 public interface TalkAudioCallBack {
 
-    public  void  RecordAudioData(byte[] audioData);
+    public   void  RecordAudioData(byte[] audioData);
 
 }

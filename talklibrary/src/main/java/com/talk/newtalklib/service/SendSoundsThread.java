@@ -78,36 +78,37 @@ public class SendSoundsThread extends BaseSoundsThread {
         super.run();
         audioRecord.startRecording();
         isStart = true;
+
+        //音频数据
+        short[] pcmFrame = new short[pcmLen];
+        //silk 格式
+        byte[] encodeAudioData = new byte[frame_size];
+        //call back data
+        byte[] data = null;
+
         while (true) {
 
             if (!isStart) {
                 return;
             }
-
-            if (isRunning) {
+            if (isRunning()) {
                 try {
-                    //音频数据
-                    short[] pcmFrame = new short[pcmLen];
                     //获取录音到的音频流数据（PCM）
                     int recordedSize = audioRecord.read(pcmFrame, 0, pcmLen);
-//                    Log.e(TAG, "handlerAudioDataCallBack: frame_size = %d "+frame_size);
-//                    Log.e(TAG, "handlerAudioDataCallBack: recordedSize = %d "+recordedSize);
                     //音频编码  pcm ->silk 格式
                     int encodeSize = frame_size;
-                    byte[] encodeAudioData = new byte[encodeSize];
+                    //编码音频数据
                     encodeSize = codec.SpeexEncodeAudioData(pcmFrame, recordedSize, encodeAudioData, encodeSize);
                     if (encodeSize > 0) {
                         //回调录音数据包
-//                      Log.e(TAG, "handlerAudioDataCallBack: data = %d "+encodeSize);
-                        byte[] data = new byte[encodeSize];
+                        data = new byte[encodeSize];
                         ByteBuffer.wrap(encodeAudioData).get(data, 0, encodeSize);
-                        if (myCallBack != null) {
+                        if (myCallBack != null && isRunning()) {
                             myCallBack.RecordAudioData(data);
                         }
                         //获取分贝值
                         volume = SendSoundsThread.this.countDb(pcmFrame);
                     }
-
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -115,7 +116,7 @@ public class SendSoundsThread extends BaseSoundsThread {
 
             } else {
                 try {
-                    sleep(1);
+                    sleep(1000*1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -143,8 +144,12 @@ public class SendSoundsThread extends BaseSoundsThread {
 
         myCallBack = null;
         if (audioRecord != null) {
-            audioRecord.stop();
-            audioRecord.release();
+            try {
+                audioRecord.stop();
+                audioRecord.release();
+            }catch (Throwable e){
+                e.printStackTrace();
+            }
             audioRecord = null;
         }
 
@@ -157,14 +162,13 @@ public class SendSoundsThread extends BaseSoundsThread {
     public void setRunning(boolean isRunning) {
 
         this.isRunning = isRunning;
-
     }
 
     /***
      * 获取录音线程是否在工作
      * @return
      */
-    public boolean isRunning() {
+    public  boolean isRunning() {
         return isRunning;
     }
 

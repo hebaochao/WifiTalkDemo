@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.talk.newtalklib.code.SpeexCoder;
 
-import java.util.LinkedList;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Created by alex on 16/10/5.
@@ -24,12 +24,10 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
      * 播放语音线程是否运行
      */
     private boolean isRunning ;
-
-
     /***
      * 接收到的包数据缓冲池
      */
-    private LinkedList<byte[]> dataList = null;
+    private LinkedBlockingDeque<byte[]> dataList = null;
 
 
     public ReceiveSoundsThread() {
@@ -40,14 +38,14 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
         Log.e(TAG, "ReceiveSoundsThread: playBufSize"+playBufSize);
         audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, frequency, AudioFormat.CHANNEL_OUT_MONO,audioFormat, playBufSize, AudioTrack.MODE_STREAM);
 
-
+        //设置音量
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             audioTrack.setVolume(1.0f);
         }else {
             audioTrack.setStereoVolume(1.0f,1.0f);
         }
-
-        audioTrack.play();  //播放
+        //启动扬声器播放
+        audioTrack.play();
     }
 
     @Override
@@ -55,74 +53,56 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
     {
         super.run();
         //初始化参数
-        dataList =  new LinkedList<>();
+        dataList =  new LinkedBlockingDeque<>();
         isRunning = true;
         //后台播音处理
-        while (true){
-
-            if(!isRunning){
-                return;
+        while (isRunning()){
+            byte[]   data = null;
+            try {
+                //阻塞等待获取音频数据
+               data  =  dataList.take();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
-            if( !dataList.isEmpty()){
-                    //播放音频
-                    playAudio();
-            } else{
-                //非运行状态 或者数据包为空
-                try {
-                    Thread.sleep(15);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+             //play audio data
+            if (isRunning()){
+                //播放音频
+                playAudio(data);
             }
 
         }
 
     }
 
+    /***
+     * 音频解码后原生数据PCM
+     */
+    private   short[] decoderData = new short[pcmLen];
 
-
-
-     public   void playAudio(){
-
-             byte [] data = dataList.removeFirst();
-
+     public   void playAudio(byte [] data){
              try {
                  //解码  audio - >pcm
-                 Log.e(TAG, "playAudio: 音频数据解码"+data.length);
-
-                 short[] decoderData = new short[pcmLen];
+//                  Log.e(TAG, "playAudio: 音频数据解码"+data.length);
                   int  decoderDataLen = codec.SpeexDecodeAudioData(data,data.length,decoderData);
-                 Log.e(TAG, "playAudio: 音频数据解码完毕"+data);
+                  Log.e(TAG, "playAudio: 音频数据解码完毕"+data);
                  if (decoderDataLen == 0 ){ //解码成功
                      // 播放解码后的数据  把数据写到数据流中
                      audioTrack.write(decoderData, 0, decoderData.length);
-                     Log.i(TAG, "run: 音频数据写到播放器中");
+//                     Log.i(TAG, "run: 音频数据写到播放器中");
                  }
-
-
              } catch (Exception e) {
                  // TODO Auto-generated catch block
                  e.printStackTrace();
                  Log.i(TAG, "run: "+e.toString());
              }
-
-
-
     }
 
 
 
 
-    /*****
-     * 设置是否运行播放线程
-     * @param isRunning
-     */
-    public void setRunning(boolean isRunning)
-    {
-        this.isRunning = isRunning;
+    public synchronized boolean isRunning() {
+        return isRunning;
     }
-
 
     /***
      * 待播放列表
@@ -130,10 +110,8 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
      * @param recordBytes
      */
     public  void addRecordBytes(byte[] recordBytes){
-
-        synchronized (dataList) {
-            dataList.add(recordBytes);
-            dataList.notifyAll();
+        if (isRunning()){
+            dataList.offer(recordBytes);
         }
         Log.e(TAG, "addRecordBytes: 添加语音数据到队列中");
     }

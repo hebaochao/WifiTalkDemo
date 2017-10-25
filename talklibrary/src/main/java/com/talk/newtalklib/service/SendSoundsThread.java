@@ -84,10 +84,9 @@ public class SendSoundsThread extends BaseSoundsThread {
         //silk 格式
         byte[] encodeAudioData = new byte[frame_size];
         //call back data
-        byte[] data = null;
+        byte[] data = new byte[frame_size];
 
         while (true) {
-
             if (!isStart) {
                 return;
             }
@@ -101,7 +100,7 @@ public class SendSoundsThread extends BaseSoundsThread {
                     encodeSize = codec.SpeexEncodeAudioData(pcmFrame, recordedSize, encodeAudioData, encodeSize);
                     if (encodeSize > 0) {
                         //回调录音数据包
-                        data = new byte[encodeSize];
+//                        data = new byte[encodeSize];
                         ByteBuffer.wrap(encodeAudioData).get(data, 0, encodeSize);
                         if (myCallBack != null && isRunning()) {
                             myCallBack.RecordAudioData(data);
@@ -116,7 +115,7 @@ public class SendSoundsThread extends BaseSoundsThread {
 
             } else {
                 try {
-                    sleep(1000*1);
+                    sleep(1000*3);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -159,7 +158,7 @@ public class SendSoundsThread extends BaseSoundsThread {
      * 设置录音线程是否运行
      * @param isRunning
      */
-    public void setRunning(boolean isRunning) {
+    public synchronized void setRunning(boolean isRunning) {
 
         this.isRunning = isRunning;
     }
@@ -168,7 +167,7 @@ public class SendSoundsThread extends BaseSoundsThread {
      * 获取录音线程是否在工作
      * @return
      */
-    public  boolean isRunning() {
+    public synchronized boolean isRunning() {
         return isRunning;
     }
 

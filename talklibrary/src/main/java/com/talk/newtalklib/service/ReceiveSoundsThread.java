@@ -84,7 +84,7 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
                  //解码  audio - >pcm
 //                  Log.e(TAG, "playAudio: 音频数据解码"+data.length);
                   int  decoderDataLen = codec.SpeexDecodeAudioData(data,data.length,decoderData);
-                  Log.e(TAG, "playAudio: 音频数据解码完毕"+data);
+//                  Log.e(TAG, "playAudio: 音频数据解码完毕"+data);
                  if (decoderDataLen == 0 ){ //解码成功
                      // 播放解码后的数据  把数据写到数据流中
                      audioTrack.write(decoderData, 0, decoderData.length);
@@ -113,7 +113,7 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
         if (isRunning()){
             dataList.offer(recordBytes);
         }
-        Log.e(TAG, "addRecordBytes: 添加语音数据到队列中");
+//        Log.e(TAG, "addRecordBytes: 添加语音数据到队列中");
     }
 
     /***

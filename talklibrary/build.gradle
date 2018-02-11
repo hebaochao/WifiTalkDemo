@@ -1,19 +1,21 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "26.0.1"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         ndk{
             moduleName "libspeex"
-            abiFilters "all"
+            abiFilters "armeabi","armeabi-v7a","x86","x86_64","arm64-v8a"
         }
     }
+
+
     buildTypes {
         release {
             minifyEnabled false
@@ -35,6 +37,5 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.3.1'
 }

@@ -1,9 +1,4 @@
-package com.talk.oldtalklib.Audio;
-
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-
+package com.talk.networktalklib.Audio;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -14,9 +9,13 @@ import android.media.audiofx.AcousticEchoCanceler;
 import android.media.audiofx.NoiseSuppressor;
 import android.util.Log;
 
-import com.talk.oldtalklib.Config.AppConfig;
-import com.talk.oldtalklib.Utils.Codec;
-import com.talk.oldtalklib.Utils.Speex;
+import com.talk.networktalklib.Config.AppConfig;
+import com.talk.networktalklib.utils.Codec;
+import com.talk.networktalklib.utils.Speex;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
 
 
 /**

@@ -1,8 +1,8 @@
-package com.talk.oldtalklib.Audio;
+package com.talk.networktalklib.Audio;
 
 import android.media.AudioFormat;
 
-import com.talk.oldtalklib.Utils.*;
+import com.talk.networktalklib.utils.*;
 
 /**
  * Created by alex on 16/10/5.

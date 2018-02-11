@@ -1,4 +1,4 @@
-package com.talk.oldtalklib.Utils;
+package com.talk.networktalklib.utils;
 //www.javaapk.com
 public class dataPacket
 {

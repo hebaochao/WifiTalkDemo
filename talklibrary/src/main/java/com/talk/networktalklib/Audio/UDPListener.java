@@ -1,4 +1,4 @@
-package com.talk.oldtalklib.Audio;
+package com.talk.networktalklib.Audio;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 
 import android.util.Log;
 
-import com.talk.oldtalklib.Config.AppConfig;
+import com.talk.networktalklib.Config.AppConfig;
 
 
 /**

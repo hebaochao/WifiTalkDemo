@@ -1,12 +1,13 @@
-package com.talk.oldtalklib.Audio;
+package com.talk.networktalklib.Audio;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.util.Log;
 
-import com.talk.oldtalklib.Config.AppConfig;
-import com.talk.oldtalklib.Utils.Codec;
+
+import com.talk.networktalklib.Config.AppConfig;
+import com.talk.networktalklib.utils.Codec;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -14,7 +15,7 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 
 /**
- * Created by alex on 16/10/5.
+ * Created by baochaoh on 16/10/5.
  */
 public class NetReceiveSoundsThread extends BaseSoundsThread {
 
@@ -38,16 +39,9 @@ public class NetReceiveSoundsThread extends BaseSoundsThread {
     public NetReceiveSoundsThread(Codec mycode)
     {
         // 播放器
-//        int playerBufferSize = AudioTrack.getMinBufferSize(44100, AudioFormat.CHANNEL_OUT_MONO,
-//                AudioFormat.ENCODING_PCM_16BIT);
-//        player = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_OUT_MONO,
-//                AudioFormat.ENCODING_PCM_16BIT, playerBufferSize, AudioTrack.MODE_STREAM);
         playBufSize = AudioTrack.getMinBufferSize(frequency, AudioFormat.CHANNEL_CONFIGURATION_MONO, AudioFormat.ENCODING_PCM_16BIT);
         audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, frequency, AudioFormat.CHANNEL_CONFIGURATION_MONO, AudioFormat.ENCODING_PCM_16BIT, playBufSize, AudioTrack.MODE_STREAM);
-
         audioTrack.setStereoVolume(0.8f, 0.8f);// 设置当前音量大小
-
-
     }
 
 

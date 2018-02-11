@@ -21,7 +21,7 @@ void *dec_state;
 static JavaVM *gJavaVM;
 
 extern "C"
-JNIEXPORT jint JNICALL Java_com_talk_oldtalklib_Utils_Speex_open
+JNIEXPORT jint JNICALL Java_com_talk_networktalklib_utils_Speex_open
   (JNIEnv *env, jobject obj, jint compression) {
 	int tmp;
 
@@ -42,7 +42,7 @@ JNIEXPORT jint JNICALL Java_com_talk_oldtalklib_Utils_Speex_open
 }
 
 extern "C"
-JNIEXPORT jint JNICALL Java_com_talk_oldtalklib_Utils_Speex_encode
+JNIEXPORT jint JNICALL Java_com_talk_networktalklib_utils_Speex_encode
     (JNIEnv *env, jobject obj, jshortArray lin, jint offset, jbyteArray encoded, jint size) {
 
         jshort buffer[enc_frame_size];
@@ -71,7 +71,7 @@ JNIEXPORT jint JNICALL Java_com_talk_oldtalklib_Utils_Speex_encode
 }
 
 extern "C"
-JNIEXPORT jint JNICALL Java_com_talk_oldtalklib_Utils_Speex_decode
+JNIEXPORT jint JNICALL Java_com_talk_networktalklib_utils_Speex_decode
     (JNIEnv *env, jobject obj, jbyteArray encoded, jshortArray lin, jint size) {
 
         jbyte buffer[dec_frame_size];
@@ -91,7 +91,7 @@ JNIEXPORT jint JNICALL Java_com_talk_oldtalklib_Utils_Speex_decode
 }
 
 extern "C"
-JNIEXPORT jint JNICALL Java_com_talk_oldtalklib_Utils_Speex_getFrameSize
+JNIEXPORT jint JNICALL Java_com_talk_networktalklib_utils_Speex_getFrameSize
     (JNIEnv *env, jobject obj) {
 
 	if (!codec_open)
@@ -101,7 +101,7 @@ JNIEXPORT jint JNICALL Java_com_talk_oldtalklib_Utils_Speex_getFrameSize
 }
 
 extern "C"
-JNIEXPORT void JNICALL Java_com_talk_oldtalklib_Utils_Speex_close
+JNIEXPORT void JNICALL Java_com_talk_networktalklib_utils_Speex_close
     (JNIEnv *env, jobject obj) {
 
 	if (--codec_open != 0)

@@ -1,4 +1,4 @@
-package com.talk.oldtalklib.Audio;
+package com.talk.networktalklib.Audio;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;
@@ -6,9 +6,10 @@ import android.media.MediaRecorder;
 import android.media.audiofx.AcousticEchoCanceler;
 import android.media.audiofx.NoiseSuppressor;
 
-import com.talk.oldtalklib.Config.AppConfig;
-import com.talk.oldtalklib.Utils.Codec;
-import com.talk.oldtalklib.Utils.dataPacket;
+
+import com.talk.networktalklib.Config.AppConfig;
+import com.talk.networktalklib.utils.Codec;
+import com.talk.networktalklib.utils.dataPacket;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -18,7 +19,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 /**
- * Created by alex on 16/10/5.
+ * Created by baochaoh on 16/10/5.
  */
 public class NetSendSoundsThread extends BaseSoundsThread {
 
@@ -60,13 +61,6 @@ public class NetSendSoundsThread extends BaseSoundsThread {
             recBufSize = AudioRecord.getMinBufferSize(frequency, AudioFormat.CHANNEL_CONFIGURATION_MONO, AudioFormat.ENCODING_PCM_16BIT);
             audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, AudioFormat.CHANNEL_CONFIGURATION_MONO, AudioFormat.ENCODING_PCM_16BIT, recBufSize);
             aec(audioRecord);
-
-            // 录音机
-//            int recordBufferSize = AudioRecord.getMinBufferSize(44100, AudioFormat.CHANNEL_IN_MONO,
-//                    AudioFormat.ENCODING_PCM_16BIT);
-//            recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, 44100, AudioFormat.CHANNEL_IN_MONO,
-//                    AudioFormat.ENCODING_PCM_16BIT, recordBufferSize);
-
 
             if (recBufSize == 640) {
                 if (frame_size == 960) frame_size = 320;

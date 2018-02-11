@@ -1,4 +1,4 @@
-package com.talk.oldtalklib.Config;
+package com.talk.networktalklib.Config;
 //www.javaapk.com
 public class AppConfig
 {

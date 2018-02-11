@@ -6,6 +6,7 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.media.audiofx.AcousticEchoCanceler;
 import android.media.audiofx.NoiseSuppressor;
+import android.util.Log;
 
 import com.talk.TalkAudioCallBack;
 import com.talk.newtalklib.code.SpeexCoder;
@@ -14,7 +15,7 @@ import java.nio.ByteBuffer;
 
 
 /**
- * Created by alex on 16/10/5.
+ * Created by baochaoh on 16/10/5.
  * 发送语音线程  ，录音的数据包通过接口回调
  */
 public class SendSoundsThread extends BaseSoundsThread {
@@ -68,7 +69,7 @@ public class SendSoundsThread extends BaseSoundsThread {
         frame_size = AudioRecord.getMinBufferSize(frequency, AudioFormat.CHANNEL_IN_MONO, audioFormat);
         audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, AudioFormat.CHANNEL_IN_MONO, audioFormat, frame_size);
 
-        aec(audioRecord);
+        this.aec(audioRecord);
 
     }
 
@@ -83,8 +84,6 @@ public class SendSoundsThread extends BaseSoundsThread {
         short[] pcmFrame = new short[pcmLen];
         //silk 格式
         byte[] encodeAudioData = new byte[frame_size];
-        //call back data
-        byte[] data = new byte[frame_size];
 
         while (true) {
             if (!isStart) {
@@ -96,11 +95,14 @@ public class SendSoundsThread extends BaseSoundsThread {
                     int recordedSize = audioRecord.read(pcmFrame, 0, pcmLen);
                     //音频编码  pcm ->silk 格式
                     int encodeSize = frame_size;
+                    if (codec == null){
+                        continue;
+                    }
                     //编码音频数据
                     encodeSize = codec.SpeexEncodeAudioData(pcmFrame, recordedSize, encodeAudioData, encodeSize);
                     if (encodeSize > 0) {
                         //回调录音数据包
-//                        data = new byte[encodeSize];
+                        byte[] data = new byte[encodeSize];
                         ByteBuffer.wrap(encodeAudioData).get(data, 0, encodeSize);
                         if (myCallBack != null && isRunning()) {
                             myCallBack.RecordAudioData(data);
@@ -139,17 +141,26 @@ public class SendSoundsThread extends BaseSoundsThread {
      */
     public void releaseSendSoundsThread() {
         isStart = false;
-        codec.ReleaseSpeexEncode();
 
         myCallBack = null;
         if (audioRecord != null) {
             try {
+                Log.e("test", "audioRecord: stop start" );
                 audioRecord.stop();
+                Log.e("test", "audioRecord: stop end" );
+                Log.e("test", "audioRecord: release start" );
                 audioRecord.release();
+                Log.e("test", "audioRecord: end" );
             }catch (Throwable e){
                 e.printStackTrace();
             }
             audioRecord = null;
+        }
+        if (codec != null){
+            Log.e("test", "releaseSendSoundsThread: start" );
+            codec.ReleaseSpeexEncode();
+            codec = null;
+            Log.e("test", "releaseSendSoundsThread:  end" );
         }
 
     }

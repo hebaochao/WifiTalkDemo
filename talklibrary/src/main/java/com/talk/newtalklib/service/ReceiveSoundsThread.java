@@ -3,6 +3,7 @@ package com.talk.newtalklib.service;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.media.audiofx.LoudnessEnhancer;
 import android.os.Build;
 import android.util.Log;
 
@@ -11,7 +12,7 @@ import com.talk.newtalklib.code.SpeexCoder;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**
- * Created by alex on 16/10/5.
+ * Created by baochaoh on 16/10/5.
  */
 public class ReceiveSoundsThread extends BaseSoundsThread {
 
@@ -28,7 +29,8 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
      * 接收到的包数据缓冲池
      */
     private LinkedBlockingDeque<byte[]> dataList = null;
-
+    // 定义音频响度处理类
+    private LoudnessEnhancer loudnessEnhancer;
 
     public ReceiveSoundsThread() {
         codec = new SpeexCoder();
@@ -46,6 +48,12 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
         }
         //启动扬声器播放
         audioTrack.play();
+        //音效增益  增大音量 增大响度
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            loudnessEnhancer = new LoudnessEnhancer(audioTrack.getAudioSessionId());
+            //设置用于音频效果的目标响度
+            loudnessEnhancer.setTargetGain(5000);
+        }
     }
 
     @Override
@@ -98,8 +106,6 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
     }
 
 
-
-
     public synchronized boolean isRunning() {
         return isRunning;
     }
@@ -137,6 +143,11 @@ public class ReceiveSoundsThread extends BaseSoundsThread {
      * 停止播放音频线程
      */
     public void stopMyReceiveSoundsThread(){
+        if (loudnessEnhancer != null){
+            // 释放所有对象
+            loudnessEnhancer.release();
+            loudnessEnhancer = null;
+        }
         isRunning = false;
         codec.ReleaseSpeexDecode();
         dataList.clear();

@@ -6,7 +6,7 @@ import com.talk.newtalklib.code.SpeexCoder;
 
 
 /**
- * Created by alex on 16/10/5.
+ * Created by baochaoh on 16/10/5.
  */
 public class BaseSoundsThread extends  Thread {
 
@@ -27,6 +27,8 @@ public class BaseSoundsThread extends  Thread {
     public final   int pcmLen = frequency * 20/1000;
 
 
+    // 设备信息：手机名+Android版本
+    public String DevInfo = android.os.Build.MODEL + " Android " + android.os.Build.VERSION.RELEASE;
 
 
 }
